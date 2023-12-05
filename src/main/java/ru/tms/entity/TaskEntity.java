@@ -6,6 +6,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -19,21 +21,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "userInfo")
+@Table(name = "task")
 @Setter
 @Getter
 @EqualsAndHashCode
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfo {
+public class TaskEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
-    private String email;
-    private String password;
-    private String roles;
-    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<TaskEntity> task = new ArrayList<>();
+    private String head;
+    private String description;
+    private String status;
+    private String priority;
+    private String executor;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UserInfo_id")
+    private UserInfo userInfo;
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CommentEntity> comment = new ArrayList<>();
+
+
 }
